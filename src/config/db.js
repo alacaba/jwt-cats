@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-
-mongoose.connect('mongodb://localhost/cats', { useNewUrlParser: true });
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
 const mongo = mongoose.connection;
 
 const db = {};
