@@ -5,10 +5,7 @@ const helmet     = require('helmet');
 const app = express();
 
 require('dotenv').config()
-
-const db = require('./config/db');
-
-db.connect();
+require('./config/db');
 
 app.use(helmet());
 app.use(morgan('tiny'));

@@ -1,12 +1,9 @@
 const mongoose = require('mongoose');
+
+mongoose.set('useCreateIndex', true);
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
-const mongo = mongoose.connection;
 
-const db = {};
+mongoose.connection.on('error', () => console.error('mongodb connection error'));
+mongoose.connection.on('open', () => console.log('mongodb connection successful'));
 
-db.connect = function() {
-  mongo.on('error', console.error.bind(console, 'connection error'));
-  mongo.once('open', () => console.log('connected'));
-}
 
-module.exports = db;
