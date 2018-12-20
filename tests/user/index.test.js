@@ -94,4 +94,20 @@ describe('User', () => {
     })
   })
 
+
+  describe('#verifyPassword', () => {
+    it ('check if the password supplied is valid', done => {
+      const user = new User({
+        email: 'test@example.com',
+        password: 'password',
+      });
+
+      user.save()
+        .then(u => {
+          expect(u.verifyPassword('test')).to.equal(false)
+          done()
+        })
+    })
+  })
+
 });
