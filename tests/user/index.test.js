@@ -3,6 +3,7 @@ const User     = require('../../src/user');
 const mongoose = require('mongoose');
 const db       = require('../../src/config/db');
 const expect   = require('chai').expect;
+const bcrypt = require('bcrypt');
 
 describe('User', () => {
   beforeEach(done => {
@@ -73,6 +74,22 @@ describe('User', () => {
 
           expect(keys).to.include('password');
           done()
+        })
+    })
+  })
+
+  describe('#save', () => {
+    it ('hashes the password', done => {
+      let user = new User({
+        email: 'test@example.com',
+        password: 'password',
+      });
+
+      user
+        .save()
+        .then(u => {
+          expect(bcrypt.compareSync(user.password, u.password)).to.eq(true);
+          done();
         })
     })
   })
