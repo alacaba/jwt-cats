@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 describe('User', () => {
   beforeEach(done => {
     Promise.all([
-      User.remove({}),
+      User.deleteMany(),
     ])
     .then(() => done())
   });
@@ -88,7 +88,7 @@ describe('User', () => {
       user
         .save()
         .then(u => {
-          expect(bcrypt.compareSync(user.password, u.password)).to.eq(true);
+          expect(bcrypt.compareSync('password', u.password)).to.eq(true);
           done();
         })
     })

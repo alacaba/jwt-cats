@@ -23,9 +23,8 @@ UserSchema.pre('save', function(next) {
   const salt = bcrypt.genSaltSync(SALT_FACTOR);
   const hash = bcrypt.hashSync(user.password, salt);
 
-  console.log(hash);
+  user.set('password', hash);
 
-  user.password = hash;
   next();
 })
 
