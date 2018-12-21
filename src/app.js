@@ -7,6 +7,8 @@ const app = express();
 require('dotenv').config()
 require('./config/db');
 
+const userRoute = require('./user/route');
+
 app.use(helmet());
 app.use(morgan('tiny'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,6 +17,8 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
   res.send('ok')
 })
+
+app.use('/users', userRoute);
 
 const PORT = process.env.PORT || 3000;
 

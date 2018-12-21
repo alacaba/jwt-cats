@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const Schema = mongoose.Schema;
+const mongoose    = require('mongoose');
+const Schema      = mongoose.Schema;
+const bcrypt      = require('bcrypt');
 const SALT_FACTOR = Number(process.env.SALT_WORK_FACTOR);
 
 const UserSchema = new Schema({
@@ -13,6 +13,9 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   }
+},
+{
+  timestamps: true,
 });
 
 UserSchema.pre('save', function(next) {

@@ -3,7 +3,7 @@ const User     = require('../../src/user');
 const mongoose = require('mongoose');
 const db       = require('../../src/config/db');
 const expect   = require('chai').expect;
-const bcrypt = require('bcrypt');
+const bcrypt   = require('bcrypt');
 
 describe('User', () => {
   beforeEach(done => {
