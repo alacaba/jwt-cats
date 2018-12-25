@@ -1,34 +1,21 @@
-require('dotenv').load();
-const User     = require('../../src/user');
-const mongoose = require('mongoose');
-const db       = require('../../src/config/db');
-const expect   = require('chai').expect;
-const bcrypt   = require('bcrypt');
+const { User, mongoose, expect, bcrypt, factory } = require('../utils/helper');
 
-describe('User', () => {
-  beforeEach(done => {
-    Promise.all([
-      User.deleteMany(),
-    ])
-    .then(() => done())
-  });
+require('../factories');
 
-  after(() => mongoose.disconnect());
+describe('User Model', () => {
+  beforeEach(async () => await User.deleteMany())
 
   it('creates a new user', done => {
-    let user = new User({
-      email: 'test@example.com',
-      password: 'password',
-    });
+    let user = factory.create('user');
 
     user
-      .save()
       .then(() => {
         User.countDocuments({}, (err, count) => {
           expect(count).to.eq(1);
           done()
         })
-      });
+      })
+      .catch(done)
   });
 
   context('email', () => {
@@ -57,7 +44,6 @@ describe('User', () => {
       user1.save().then();
       user2.save()
         .catch(err => {
-          //console.log(err.message)
           expect(err.message).to.include('duplicate')
           done()
         })
@@ -91,6 +77,7 @@ describe('User', () => {
           expect(bcrypt.compareSync('password', u.password)).to.eq(true);
           done();
         })
+        .catch(done)
     })
   })
 
@@ -107,6 +94,7 @@ describe('User', () => {
           expect(u.verifyPassword('test')).to.equal(false)
           done()
         })
+        .catch(done)
     })
   })
 

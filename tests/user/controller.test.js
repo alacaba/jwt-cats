@@ -1,22 +1,10 @@
-const app        = require('../../src/app');
-const request    = require('supertest');
-const User       = require('../../src/user');
-const mongoose   = require('mongoose');
-const { expect } = require('chai');
-const { factory } = require('factory-girl');
+const { app, User, request, mongoose, expect, factory } = require('../utils/helper');
 
 // load factories
 require('../factories');
 
-describe.only('User API', () => {
-  beforeEach(done => {
-      Promise.all([
-        User.deleteMany()
-      ])
-      .then(() => done())
-  })
-
-  after(() => mongoose.disconnect())
+describe('User API', () => {
+  beforeEach(async () => await User.deleteMany())
 
   describe('GET /users', () => {
     context ('when not empty', () => {
@@ -43,7 +31,7 @@ describe.only('User API', () => {
     })
 
     context ('when empty', () => {
-      it ('returns an empty array',done => {
+      it ('returns an empty array', done => {
         request(app)
           .get('/users')
           .set('Content-Type', 'application/json')
