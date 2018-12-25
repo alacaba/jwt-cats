@@ -1,4 +1,5 @@
 const User = require('../user');
+const Blacklist = require('../blacklist');
 
 class AuthController {
   static login (req, res) {
@@ -8,9 +9,7 @@ class AuthController {
       .findOne({ email })
       .then(user => {
         if (user && user.verifyPassword(password)) {
-          console.log('test')
           const token = user.generateToken();
-          console.log('test2')
           res.json({ token })
         } else {
           return Promise.reject('Invalid email or password')
@@ -22,6 +21,15 @@ class AuthController {
   }
 
   static logout (req, res) {
+    const b = new Blacklist({ token: req.token });
+
+    b.save()
+      .then(_ => {
+        req.user = null;
+        req.token = null;
+
+        res.send({ success: true })
+      })
   }
 }
 

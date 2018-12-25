@@ -1,6 +1,6 @@
 const { Blacklist, app, expect, factory, jwt } = require('../utils/helper');
 
-describe.only ('Blacklist', () => {
+describe ('Blacklist', () => {
   beforeEach(async () => await Blacklist.deleteMany())
 
   it ('creates a new blacklisted token', done => {
