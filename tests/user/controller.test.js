@@ -3,6 +3,10 @@ const request    = require('supertest');
 const User       = require('../../src/user');
 const mongoose   = require('mongoose');
 const { expect } = require('chai');
+const { factory } = require('factory-girl');
+
+// load factories
+require('../factories');
 
 describe.only('User API', () => {
   beforeEach(done => {
@@ -18,16 +22,8 @@ describe.only('User API', () => {
     context ('when not empty', () => {
       let user;
 
-      beforeEach(done => {
-        new User ({
-            email: 'test@example.com',
-            password: 'password',
-          })
-          .save()
-          .then(u => {
-            user = u;
-            done();
-          })
+      beforeEach(async () => {
+        user = await factory.create('user');
       })
 
       it ('returns all users', done => {
@@ -66,16 +62,9 @@ describe.only('User API', () => {
   describe('GET /users/:id', () => {
     context ('when user is found', () => {
       let user;
-      beforeEach(done => {
-        new User({
-          email: 'test@example.com',
-          password: 'password',
-        })
-        .save()
-        .then(u => {
-          user = u;
-          done()
-        })
+
+      beforeEach(async () => {
+        user = await factory.create('user');
       })
 
       it ('returns the user object', done => {
@@ -114,16 +103,8 @@ describe.only('User API', () => {
     context ('updating existing user', () => {
       let user;
 
-      beforeEach(done => {
-        new User({
-          email: 'test@example.com',
-          password: 'password',
-        })
-        .save()
-        .then(u => {
-          user = u;
-          done();
-        })
+      beforeEach(async () => {
+        user = await factory.create('user');
       })
 
       it ('updates the user', done => {
@@ -165,22 +146,12 @@ describe.only('User API', () => {
     context ('when user exists', () => {
       let user, id;
 
-      beforeEach( done => {
-        new User({
-          email: 'test@example.com',
-          password: 'password'
-        })
-        .save()
-        .then(u => {
-          id = u.get('_id').toString();
-          user = u;
-          done()
-        })
+      beforeEach(async () => {
+        user = await factory.create('user');
+        id = user.get('_id').toString();
       })
 
       it ('returns the deleted user', done => {
-        const id = user.get('_id').toString();
-
         request(app)
           .delete(`/users/${id}`)
           .set('Content-Type', 'application/json')
