@@ -8,6 +8,7 @@ require('dotenv').config()
 require('./config/db');
 
 const userRoute = require('./user/route');
+const authRoute = require('./auth/route');
 
 app.use(helmet());
 app.use(morgan('tiny'));
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/users', userRoute);
+app.use('/auth', authRoute);
 
 const PORT = process.env.PORT || 3000;
 
